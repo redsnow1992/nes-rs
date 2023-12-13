@@ -57,6 +57,12 @@ mod tests {
     use super::CPU;
 
     #[test]
+    fn test_cpu_default() {
+        let cpu = CPU::default();
+        assert_eq!(cpu.ra.0, 0);
+    }
+
+    #[test]
     fn test_0xa9_lda_immediate_load_data() {
         let mut cpu = CPU::new();
         cpu.interpret(vec![0xa9, 0x05, 0x00]);
