@@ -1,6 +1,5 @@
 use crate::{
     memory::AddressingMode::{self, *},
-    register::Status,
     system::System,
 };
 
@@ -19,8 +18,7 @@ impl Oprand for LDA {
         let param = system.fetch_from(addr);
         let cpu = &mut system.cpu;
         cpu.ra.load(param);
-        cpu.status.set(Status::Z, cpu.ra.is_zero());
-        cpu.status.set(Status::N, cpu.ra.is_set(7));
+        cpu.update_registers();
     }
 
     fn step_size(&self) -> u16 {
@@ -41,8 +39,7 @@ impl Oprand for TAX {
     fn execute(&self, system: &mut System) {
         let cpu = &mut system.cpu;
         cpu.rx.0 = cpu.ra.0;
-        cpu.status.set(Status::Z, cpu.ra.is_zero());
-        cpu.status.set(Status::N, cpu.ra.is_set(7));
+        cpu.update_registers();
     }
 
     fn step_size(&self) -> u16 {
@@ -58,8 +55,7 @@ impl Oprand for INX {
     fn execute(&self, system: &mut System) {
         let cpu = &mut system.cpu;
         cpu.rx.0 = cpu.rx.0.wrapping_add(1);
-        cpu.status.set(Status::Z, cpu.ra.is_zero());
-        cpu.status.set(Status::N, cpu.ra.is_set(7));
+        cpu.update_registers();
     }
 
     fn step_size(&self) -> u16 {

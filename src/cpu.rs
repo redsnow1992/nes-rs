@@ -37,6 +37,11 @@ impl CPU {
             pc: ProgramCounter(0),
         }
     }
+
+    pub fn update_registers(&mut self) {
+        self.status.set(Status::ZERO, self.ra.is_zero());
+        self.status.set(Status::NEGATIVE, self.ra.is_set(7));
+    }
 }
 
 #[cfg(test)]
